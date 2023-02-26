@@ -39,7 +39,6 @@ function* generatePieData() {
 }
 
 const generator = generatePieData();
-
 const pies: PieRes[] = [];
 
 Array.from(generator).forEach((val) => pies.push(val));
@@ -80,6 +79,9 @@ export const pieResolver = async (
   let startTime = from - Math.floor(from % interval);
   const finishTime = to - Math.floor(to % interval);
   for (let dataInd = indexFrom; startTime < finishTime; dataInd++) {
+    if (!pies[dataInd]?.data) {
+      break;
+    }
     pies[dataInd].data.forEach((item, index) => {
       if (pieDatas[index]) {
         return;
@@ -87,6 +89,7 @@ export const pieResolver = async (
       pieDatas[index] = { name: '', value: 0 };
     });
     pies[dataInd].data.forEach((item, index) => {
+      pieDatas[index] = pieDatas[index] || { name: '', value: 0 };
       pieDatas[index].name = item.name;
       pieDatas[index].value += item.value;
     });
