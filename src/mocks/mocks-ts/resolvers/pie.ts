@@ -79,9 +79,7 @@ export const pieResolver = async (
   let startTime = from - Math.floor(from % interval);
   const finishTime = to - Math.floor(to % interval);
   for (let dataInd = indexFrom; startTime < finishTime; dataInd++) {
-    if (!pies[dataInd]?.data) {
-      break;
-    }
+    if(dataInd === 360) break
     pies[dataInd].data.forEach((item, index) => {
       if (pieDatas[index]) {
         return;

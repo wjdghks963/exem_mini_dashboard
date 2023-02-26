@@ -66,6 +66,7 @@ export const valueResolver = (
   let startTime = from - Math.floor(from % interval);
   const finishTime = to - Math.floor(to % interval);
   for (let dataInd = indexFrom; startTime < finishTime; dataInd++) {
+    if(dataInd === 360) break
     resultValue.value += values[dataInd].value;
     startTime += interval;
   }
