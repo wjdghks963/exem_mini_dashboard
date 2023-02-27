@@ -1,26 +1,36 @@
 import React, {useState} from "react";
 import styled, { keyframes} from "styled-components";
+import {SelectorMapObject} from "../type";
 
 interface SelectorProps<T>{
     state:T
     setState:React.Dispatch<React.SetStateAction<T>>
-    options:{key:string, value:any}[]
+    options:Map<any,SelectorMapObject<any>>
+    haveToChoose?:boolean
 }
 
-export function Selector({state, setState, options}: SelectorProps<any>) {
-    // option에 value값과 state가 같다면 현재 선택 옵션으로 표현하고 만약 아니라면 "선택해주세요"를 나타낸다.
-    const findStateIsInOption: {key: string, value: any} | undefined =  options.find(option => option.value === state)
-    const isStateFind:string = findStateIsInOption ? options.find(option => option.value === state)!.key.toString() : "선택해주세요"
+export function Selector<T>({state, setState, options, haveToChoose}: SelectorProps<T>) {
+
+    const findStateIsInOption: {key: string, value: any} | undefined=  options.get(state);
+    const isStateFind=():string =>{
+        if(haveToChoose){
+            return "선택해주세요"
+        }else{
+           return findStateIsInOption ? findStateIsInOption.key : "선택해주세요"
+        }
+    }
+
+    // @ts-ignore
+    const optionsArr = [...options.keys()];
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedState, setSelectedState] = useState<string>(isStateFind)
-
 
     const handleOptionClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         let {textContent} = event.currentTarget
         const content = textContent ? textContent : selectedState;
 
-        setState(event.currentTarget.id)
+        setState(event.currentTarget.id as React.SetStateAction<T>)
         setSelectedState(content)
         setIsOpen(false);
     };
@@ -52,13 +62,13 @@ export function Selector({state, setState, options}: SelectorProps<any>) {
        </StateAndIconContainer>
 
 
-                <List isOpen={isOpen} >
-                    {options.map((option, index) => (
-                        <LlItem key={index} id={option.value} onClick={(event) => handleOptionClick(event)}>
-                            {option.key}
-                        </LlItem>
-                    ))}
-                </List>
+            <List isOpen={isOpen} >
+                {optionsArr.map((option, index) => (
+                    <LlItem key={index} id={option} onClick={(event) => handleOptionClick(event)}>
+                        {options.get(option)?.key}
+                    </LlItem>
+                ))}
+            </List>
         </Wrapper>
     );
 
