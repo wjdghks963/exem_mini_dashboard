@@ -1,8 +1,10 @@
 
 
-export interface ChartRequestParams{
-    from: number // unixtime
-    to: number // unixtime
+export type SelectTime = 600 | 1800 |3600;
+export type ChartType = "Line" | "Pie" | "Value" | null;
+export interface SelectorMapObject<T>{
+    key:string
+    value:T
 }
 
 export interface TimeSeriesResponse{
