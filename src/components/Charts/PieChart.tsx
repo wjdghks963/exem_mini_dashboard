@@ -9,6 +9,13 @@ import {ChartLayout} from "../ChartLayout";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const options:any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    width: 150,
+    height: 150
+
+};
 export function PieChart({selectedTime}:{selectedTime:number}) {
 
     const now = toUnixTime(new Date());
@@ -43,7 +50,7 @@ export function PieChart({selectedTime}:{selectedTime:number}) {
 
     return (
         <ChartLayout isLoading={isLoading} error={error}>
-            <Doughnut data={data}/>
+            <Doughnut data={data} options={options}/>
         </ChartLayout>
     );
 }
