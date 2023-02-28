@@ -1,5 +1,9 @@
 # 엑셈 사전 과제
 
+# 실행 gif
+
+![엑셈과제.gif](public%2F%EC%97%91%EC%85%88%EA%B3%BC%EC%A0%9C.gif)
+
 ## 실행 방법
 
     1. `npm i`
