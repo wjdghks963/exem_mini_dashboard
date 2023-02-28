@@ -25,6 +25,29 @@ ChartJS.register(
     Legend
 );
 
+const options:any = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        x: {
+            ticks: {
+                autoSkip: true,
+                maxRotation: 0,
+                minRotation: 0,
+                fontSize: 12,
+            },
+        },
+        y: {
+            ticks: {
+                beginAtZero: true,
+            },
+        },
+    },
+};
+
+
+
+const criticalPoint = 8000000;
 
 export function LineChart({selectedTime}:{selectedTime:number}) {
 
@@ -39,7 +62,10 @@ export function LineChart({selectedTime}:{selectedTime:number}) {
                 label: chartData?.name,
                 data: chartData?.data.map((label:number) => String(label)),
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: (context:any)=>{
+                    const index = context.dataIndex;
+                    const dataset = context.dataset;
+                    return (dataset.data[index] >= criticalPoint) ? 'red' : 'rgb(75, 192, 192)';},
                 tension: 0.1
             },
 
@@ -47,9 +73,11 @@ export function LineChart({selectedTime}:{selectedTime:number}) {
     };
 
 
+
     return (
-       <ChartLayout isLoading={isLoading} error={error}>
-           <Line data={data} />
+       <ChartLayout  isLoading={isLoading} error={error}>
+
+           <Line data={data} options={options}/>
        </ChartLayout>
     );
 }
